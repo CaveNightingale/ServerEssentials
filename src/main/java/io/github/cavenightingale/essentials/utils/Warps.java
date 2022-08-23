@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import static io.github.cavenightingale.essentials.Essentials.LOGGER;
 
-public class Warps {
+public class Warps extends HashMap<String, Warps.Warp> {
 	public record Warp(String name, Identifier world, Vec3d loc, FloatFloatImmutablePair angle, String description) {
 		public void teleport(ServerPlayerEntity player) {
 			ServerWorld world1 = player.getServer().getWorld(RegistryKey.of(Registry.WORLD_KEY, world));
@@ -67,19 +67,9 @@ public class Warps {
 		}
 	}
 
-	public static HashMap<String, Warp> warps = new HashMap<>();
-	public static void load() {
-		try (Reader reader = new BufferedReader(new FileReader("config/warp.json", StandardCharsets.UTF_8))) {
-			warps = Essentials.GSON.fromJson(reader, new TypeToken<HashMap<String, Warp>>(){}.getType());
-		} catch (IOException ignored) {
-		}
-	}
+	public static Warps warps = Config.load(Warps.class, "warps");
 
 	public static void save() {
-		try (Writer writer = new BufferedWriter(new FileWriter("config/warp.json", StandardCharsets.UTF_8))) {
-			Essentials.GSON.toJson(warps, writer);
-		} catch (IOException ex) {
-			LOGGER.error("Can't save warps");
-		}
+		Config.save(Warps.warps, "warps");
 	}
 }

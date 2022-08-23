@@ -6,8 +6,10 @@ import com.mojang.brigadier.tree.CommandNode;
 import io.github.cavenightingale.essentials.commands.*;
 import io.github.cavenightingale.essentials.utils.CommandNodeWithPermission;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,6 +25,7 @@ public class EssentialsCommands {
 		TpaCommand.register(dispatcher);
 		MiscCommand.register(dispatcher);
 		EssPermCommand.register(dispatcher);
+		ServerEssentialsCommand.register(dispatcher);
 		registerAliases(dispatcher,new String[][]{
 				{"tpask", "tpa"},
 				{"tpyes", "tpaccept"},
@@ -79,6 +82,13 @@ public class EssentialsCommands {
 			Essentials.GSON.toJson(map, writer);
 		} catch (IOException ex) {
 			LOGGER.error("Can't save command permissions");
+		}
+	}
+
+	public static void resendCommandTree(MinecraftServer server) {
+		PlayerManager playerManager = server.getPlayerManager();
+		for(ServerPlayerEntity player : playerManager.getPlayerList()) {
+			playerManager.sendCommandTree(player);
 		}
 	}
 }

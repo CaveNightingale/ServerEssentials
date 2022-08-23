@@ -1,4 +1,5 @@
 # SeverEssentials
+该模组提供开Fabric服所需的常用功能，需要[luckperms](https://modrinth.com/mod/luckperms)作为前置
 ## 命令
 ### home系列命令
 * /home 返回设置出生点的位置（或参数所指定的传送点）
@@ -23,6 +24,9 @@
 * /afk 告诉他人你正在挂机
 * /ping 显示延迟
 * /sit 坐地上
+### serveressentials系列命令
+* /serveressentials reload 重新加载配置文件（命令权限除外）
+* /serveressentials update 将配置文件更新到最新版本的格式
 ## 其他
 ### mobGriefing拆分
 * 恶魂、苦力怕和末影人的方块破坏被拆分成单独的游戏规则（ghastGreifing、creeperGriefing和endermanGriefing）
@@ -30,3 +34,4 @@
 ### 坐下
 * 右键可坐下的方块（例如半砖、楼梯可坐下）
 * 使用/sit坐地上
+* 需要config/Essentials/config中开启

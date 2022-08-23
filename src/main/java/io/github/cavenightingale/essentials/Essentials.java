@@ -34,7 +34,6 @@ public class Essentials implements ModInitializer {
 	public void onInitialize() {
 		CommandRegistrationCallback.EVENT.register(EssentialsCommands::onCommandRegister);
 		ServerLifecycleEvents.SERVER_STARTED.register(EssentialsCommands::onServerStarted);
-		Warps.load();
 		ServerTickEvents.END_SERVER_TICK.register(TpaCommand::tick);
 
 		gameruleCreeperGriefing = GameRuleRegistry.register("creeperGriefing", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));

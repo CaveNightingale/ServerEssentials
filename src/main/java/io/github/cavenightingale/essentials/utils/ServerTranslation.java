@@ -14,7 +14,7 @@ import static io.github.cavenightingale.essentials.Essentials.LOGGER;
 
 public class ServerTranslation {
 
-	public static ServerTranslation formats = load();
+	public static ServerTranslation formats = Config.load(ServerTranslation.class, "translation");
 
 	public record Node(String[] fmt) {
 		public Node(String fmts) {
@@ -77,28 +77,8 @@ public class ServerTranslation {
 			miscAfkBack = new Node("+ {}回来了"),
 			miscSitFailed = new Node("你现在不能坐下"),
 			homeDeath = new Node("上次死亡位置"),
-			homeSpawn = new Node("上次设置重生点位置");
+			homeSpawn = new Node("上次设置重生点位置"),
+			sessUpdated = new Node("已尝试更新配置文件"),
+			sessReloaded = new Node("已尝试重新载入配置文件");
 
-	public static ServerTranslation load() {
-		File parent = new File("config/Essentials");
-		parent.mkdirs();
-		try(Reader reader = new BufferedReader(new FileReader(new File(parent, "translation.json"), StandardCharsets.UTF_8))) {
-			return Essentials.GSON.fromJson(reader, ServerTranslation.class);
-		} catch (IOException | NullPointerException | JsonSyntaxException ex) {
-			if(!(ex instanceof FileNotFoundException)) // if the file does not exist, we just create file sliently
-				LOGGER.error("Cannot load translation, save a new one", ex);
-			try {
-				if(!(ex instanceof FileNotFoundException))
-					Files.move(new File(parent, "translation.json").toPath(), new File(parent, "translation.json.old").toPath());
-				try(Writer writer = new BufferedWriter(new FileWriter(new File(parent, "translation.json"), StandardCharsets.UTF_8))) {
-					ServerTranslation translation = new ServerTranslation();
-					Essentials.GSON.toJson(translation, writer);
-					return translation;
-				}
-			} catch (IOException e) {
-				LOGGER.error("Cannot save a new translation", ex);
-			}
-			return new ServerTranslation();
-		}
-	}
 }

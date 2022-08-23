@@ -54,10 +54,7 @@ public class EssPermCommand {
 		}
 		permissionNode = permissionNode.equals("-") ? null : permissionNode;
 		updatePermission(node, permissionNode, recursion);
-		PlayerManager playerManager = ctx.getSource().getServer().getPlayerManager();
-		for(ServerPlayerEntity player : playerManager.getPlayerList()) {
-			playerManager.sendCommandTree(player);
-		}
+		EssentialsCommands.resendCommandTree(ctx.getSource().getServer());
 		EssentialsCommands.saveCommandPermissions(ctx.getSource().getServer());
 		ctx.getSource().sendFeedback((recursion ? formats.esspermCommandPermissionSettedRecursion : formats.esspermCommandPermissionSetted).format(commandPath, permissionNode == null ? "原版权限" : permissionNode), true);
 		return 1;

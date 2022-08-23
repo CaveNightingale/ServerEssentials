@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.cavenightingale.essentials.sit.SeatEntity;
+import io.github.cavenightingale.essentials.utils.Config;
 import io.github.cavenightingale.essentials.utils.PlayerData;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ public class MiscCommand {
 		dispatcher.register(CommandManager.literal("hat").requires(player(0)).executes(s -> execHat(s.getSource().getPlayer())));
 		dispatcher.register(CommandManager.literal("ping").requires(player(0)).executes(s -> execPing(s.getSource())));
 		dispatcher.register(CommandManager.literal("fly").requires(player(1)).executes(s -> execFly(s.getSource())));
-		dispatcher.register(CommandManager.literal("sit").executes(s -> execSit(s.getSource(), 0.0))
+		dispatcher.register(CommandManager.literal("sit").requires(s -> Config.config.sitEnabled).executes(s -> execSit(s.getSource(), 0.0))
 				.then(CommandManager.argument("offset", DoubleArgumentType.doubleArg()).requires(player(2)).executes(s -> execSit(s.getSource(), DoubleArgumentType.getDouble(s, "offset")))));
 	}
 
