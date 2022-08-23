@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "serveressentials",
+  "version": "${version}",
+  "name": "ServerEssentials",
+  "description": "",
+  "authors": [
+    "CaveNightingale"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "io.github.cavenightingale.essentials.Essentials"
+    ]
+  },
+  "mixins": [
+    "serveressentials.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.18.2",
+    "fabric-permissions-api-v0": "*"
+  }
+}
