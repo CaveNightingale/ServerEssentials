@@ -29,7 +29,7 @@
 * /serveressentials update 将配置文件更新到最新版本的格式
 ## 其他
 ### mobGriefing拆分
-* 恶魂、苦力怕和末影人的方块破坏被拆分成单独的游戏规则（ghastGreifing、creeperGriefing和endermanGriefing）
+* 恶魂、苦力怕和末影人的方块破坏被拆分成单独的游戏规则（ghastGriefing、creeperGriefing和endermanGriefing）
 * 村民、凋灵、末影龙游戏规则保持不变，仍为mobGriefing
 ### 坐下
 * 右键可坐下的方块（例如半砖、楼梯可坐下）

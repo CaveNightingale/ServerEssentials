@@ -25,6 +25,11 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     // To use luckperms
     modImplementation 'me.lucko:fabric-permissions-api:0.2-SNAPSHOT'
+
+    implementation 'org.mongodb:mongodb-driver-reactivestreams:4.6.0'
+    include 'org.mongodb:mongodb-driver-reactivestreams:4.6.0'
+    include 'org.mongodb:mongodb-driver-core:4.6.0'
+    include 'org.mongodb:bson:4.6.0'
 }
 
 processResources {

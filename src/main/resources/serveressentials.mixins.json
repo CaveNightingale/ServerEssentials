@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "io.github.cavenightingale.essentials.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "io.github.cavenightingale.essentials.mixin.plugin.PreviewMixinPlugin",
   "mixins": [
     "CommandNodeMixin",
     "CreeperEntityMixin",
@@ -11,7 +12,15 @@
     "FireballMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",
-    "ServerPlayerNetworkHandlerMixin"
+    "ServerPlayerNetworkHandlerMixin",
+    "protect.AbstractBlockStateMixin",
+    "protect.BlockItemMixin",
+    "protect.BucketItemMixin",
+    "protect.PlayerManagerMixin",
+    "protect.ServerPlayerInteractionManagerMixin",
+    "protect.ServerPlayNetworkHandlerMixin",
+    "protect.ServerWorldMixin",
+    "protect.WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

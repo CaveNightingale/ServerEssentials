@@ -49,6 +49,7 @@ public class WarpCommand {
 				return 0;
 			} else {
 				Warps.warps.remove(warp.name());
+				Warps.save();
 				ctx.getSource().sendFeedback(formats.warpDeleted.format(warp.name()), true);
 			}
 			return 1;

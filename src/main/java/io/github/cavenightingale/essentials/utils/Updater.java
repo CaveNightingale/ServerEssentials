@@ -23,7 +23,7 @@ public class Updater {
 		try (Reader reader = new BufferedReader(new FileReader(legacy, StandardCharsets.UTF_8));
 		        Writer writer = new BufferedWriter(new FileWriter(modern, StandardCharsets.UTF_8))) {
 			// the class cast here is to make javac call Gson::toJson(Object src, Appendable writer) instead of Gson::toJson(JsonElement jsonElement, Appendable writer)
-			Essentials.GSON.toJson(Warps.warps = Essentials.GSON.fromJson(reader, new TypeToken<HashMap<String, Warps.Warp>>(){}.getType()), writer);
+			Essentials.GSON.toJson(Warps.warps = Essentials.GSON.fromJson(reader, new TypeToken<Warps>(){}.getType()), writer);
 		} catch (IOException | JsonParseException ex) {
 			LOGGER.debug("Update warp config failed, ignore it.", ex);
 			return;

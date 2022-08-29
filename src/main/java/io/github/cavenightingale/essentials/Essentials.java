@@ -3,6 +3,8 @@ package io.github.cavenightingale.essentials;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.cavenightingale.essentials.commands.TpaCommand;
+import io.github.cavenightingale.essentials.protect.GameEventLogger;
+import io.github.cavenightingale.essentials.utils.Config;
 import io.github.cavenightingale.essentials.utils.ServerTranslation;
 import io.github.cavenightingale.essentials.utils.Warps;
 import net.fabricmc.api.ModInitializer;
@@ -28,10 +30,10 @@ public class Essentials implements ModInitializer {
 	public static GameRules.Key<GameRules.BooleanRule> gameruleEndermanGriefing;
 	public static GameRules.Key<GameRules.BooleanRule> gameruleGhastGriefing;
 
-	public static final TagKey<Block> SEAT_TAG = TagKey.of(Registry.BLOCK_KEY, new Identifier("essentials", "seat"));
-
 	@Override
 	public void onInitialize() {
+		if(Config.config.gameLogEnabled)
+			GameEventLogger.init();
 		CommandRegistrationCallback.EVENT.register(EssentialsCommands::onCommandRegister);
 		ServerLifecycleEvents.SERVER_STARTED.register(EssentialsCommands::onServerStarted);
 		ServerTickEvents.END_SERVER_TICK.register(TpaCommand::tick);
