@@ -1,20 +1,27 @@
 package io.github.cavenightingale.essentials.protect.database;
 
-import com.mongodb.reactivestreams.client.MongoClient;
-import com.mongodb.reactivestreams.client.MongoClients;
-import io.github.cavenightingale.essentials.protect.database.event.LoggedEvent;
-import io.github.cavenightingale.essentials.protect.event.*;
-import org.bson.BsonReader;
-import org.bson.BsonWriter;
-import org.bson.codecs.Codec;
-import org.bson.codecs.DecoderContext;
-import org.bson.codecs.EncoderContext;
-import org.bson.codecs.configuration.CodecProvider;
-import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import io.github.cavenightingale.essentials.protect.database.event.LoggedEvent;
+import io.github.cavenightingale.essentials.protect.event.BlockDamageEntityEvent;
+import io.github.cavenightingale.essentials.protect.event.BlockFluidTickUpdateBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.BlockNeighbourUpdateBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.BlockRandomTickUpdateBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.BlockScheduledTickUpdateBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.ClientChatEvent;
+import io.github.cavenightingale.essentials.protect.event.ClientJoinEvent;
+import io.github.cavenightingale.essentials.protect.event.ClientQuitEvent;
+import io.github.cavenightingale.essentials.protect.event.EnvironmentBlockStateChangeEvent;
+import io.github.cavenightingale.essentials.protect.event.EnvironmentDamageEntityEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityBreakBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityDamageLivingEntityEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityDespawnEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityDieEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityInteractBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityInteractLivingEntityEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntityPlaceBlockEvent;
+import io.github.cavenightingale.essentials.protect.event.LivingEntitySpawnEvent;
 
 public class LoggedEventRegistry {
 	static Map<String, Class<? extends LoggedEvent>> registeredEventClass = new HashMap<>();

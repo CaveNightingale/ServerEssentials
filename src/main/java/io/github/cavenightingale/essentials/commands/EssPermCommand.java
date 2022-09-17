@@ -1,5 +1,17 @@
 package io.github.cavenightingale.essentials.commands;
 
+import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
+import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+
+import java.util.Collection;
+
+import net.minecraft.command.argument.GameProfileArgumentType;
+import net.minecraft.server.OperatorEntry;
+import net.minecraft.server.OperatorList;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -8,24 +20,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.CommandNode;
+
 import io.github.cavenightingale.essentials.EssentialsCommands;
 import io.github.cavenightingale.essentials.utils.CommandNodeWithPermission;
-import net.minecraft.command.argument.GameProfileArgumentType;
-import net.minecraft.server.OperatorEntry;
-import net.minecraft.server.OperatorList;
-import net.minecraft.server.PlayerManager;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-
-import java.util.Collection;
-
-import static io.github.cavenightingale.essentials.utils.CommandPredicates.player;
-import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
 
 public class EssPermCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(CommandManager.literal("essperm").requires(player(4))
+		dispatcher.register(CommandManager.literal("essperm").requires(opLevel(4))
 				.then(CommandManager.literal("command")
 						.then(CommandManager.literal("set")
 								.then(CommandManager.argument("commandNode", StringArgumentType.string())

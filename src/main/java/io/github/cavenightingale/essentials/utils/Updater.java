@@ -1,19 +1,27 @@
 package io.github.cavenightingale.essentials.utils;
 
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
-import io.github.cavenightingale.essentials.Essentials;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import org.apache.logging.log4j.core.jmx.Server;
+import static io.github.cavenightingale.essentials.Essentials.GSON;
+import static io.github.cavenightingale.essentials.Essentials.LOGGER;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static io.github.cavenightingale.essentials.Essentials.GSON;
-import static io.github.cavenightingale.essentials.Essentials.LOGGER;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
+
+import io.github.cavenightingale.essentials.Essentials;
 
 // this file help user migrate config file from old version of ServerEssentials
 public class Updater {

@@ -1,23 +1,34 @@
 package io.github.cavenightingale.essentials.protect.database;
 
-import com.mojang.authlib.GameProfile;
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.model.*;
-import com.mongodb.reactivestreams.client.*;
-import io.github.cavenightingale.essentials.Essentials;
-import io.github.cavenightingale.essentials.protect.database.LogErrorSubscriber;
-import io.github.cavenightingale.essentials.protect.database.LoggedEventRegistry;
-import io.github.cavenightingale.essentials.protect.database.event.*;
+import org.bson.Document;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.visitor.StringNbtWriter;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.registry.Registry;
-import org.bson.BsonType;
-import org.bson.Document;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.system.CallbackI;
+
+import com.mojang.authlib.GameProfile;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.Indexes;
+import com.mongodb.reactivestreams.client.ClientSession;
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
+import com.mongodb.reactivestreams.client.MongoCollection;
+import com.mongodb.reactivestreams.client.MongoDatabase;
+
+import io.github.cavenightingale.essentials.Essentials;
+import io.github.cavenightingale.essentials.protect.database.event.BlockSourcedEvent;
+import io.github.cavenightingale.essentials.protect.database.event.BlockTargetedEvent;
+import io.github.cavenightingale.essentials.protect.database.event.EntityMiddledEvent;
+import io.github.cavenightingale.essentials.protect.database.event.EntitySourcedEvent;
+import io.github.cavenightingale.essentials.protect.database.event.EntityTargetedEvent;
+import io.github.cavenightingale.essentials.protect.database.event.LoggedEvent;
+import io.github.cavenightingale.essentials.protect.database.event.ReasonedEvent;
+import io.github.cavenightingale.essentials.protect.database.event.TextedEvent;
 
 
 public class DataBaseConnection implements AutoCloseable {

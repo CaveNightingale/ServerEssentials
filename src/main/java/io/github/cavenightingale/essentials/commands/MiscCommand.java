@@ -14,18 +14,18 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 
-import static io.github.cavenightingale.essentials.utils.CommandPredicates.player;
+import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
 import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
 
 public class MiscCommand {
 
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(CommandManager.literal("afk").requires(player(0)).executes(s -> execAfk(s.getSource().getPlayer())));
-		dispatcher.register(CommandManager.literal("hat").requires(player(0)).executes(s -> execHat(s.getSource().getPlayer())));
-		dispatcher.register(CommandManager.literal("ping").requires(player(0)).executes(s -> execPing(s.getSource())));
-		dispatcher.register(CommandManager.literal("fly").requires(player(1)).executes(s -> execFly(s.getSource())));
+		dispatcher.register(CommandManager.literal("afk").requires(opLevel(0)).executes(s -> execAfk(s.getSource().getPlayer())));
+		dispatcher.register(CommandManager.literal("hat").requires(opLevel(0)).executes(s -> execHat(s.getSource().getPlayer())));
+		dispatcher.register(CommandManager.literal("ping").requires(opLevel(0)).executes(s -> execPing(s.getSource())));
+		dispatcher.register(CommandManager.literal("fly").requires(opLevel(1)).executes(s -> execFly(s.getSource())));
 		dispatcher.register(CommandManager.literal("sit").requires(s -> Config.config.sitEnabled).executes(s -> execSit(s.getSource(), 0.0))
-				.then(CommandManager.argument("offset", DoubleArgumentType.doubleArg()).requires(player(2)).executes(s -> execSit(s.getSource(), DoubleArgumentType.getDouble(s, "offset")))));
+				.then(CommandManager.argument("offset", DoubleArgumentType.doubleArg()).requires(opLevel(2)).executes(s -> execSit(s.getSource(), DoubleArgumentType.getDouble(s, "offset")))));
 	}
 
 	static int execAfk(ServerPlayerEntity src) {

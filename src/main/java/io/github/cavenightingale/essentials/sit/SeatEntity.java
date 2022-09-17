@@ -1,5 +1,8 @@
 package io.github.cavenightingale.essentials.sit;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
@@ -10,13 +13,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 public class SeatEntity extends ArmorStandEntity {
 

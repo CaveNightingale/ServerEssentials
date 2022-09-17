@@ -1,22 +1,35 @@
 package io.github.cavenightingale.essentials;
 
-import com.google.gson.reflect.TypeToken;
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.tree.CommandNode;
-import io.github.cavenightingale.essentials.commands.*;
-import io.github.cavenightingale.essentials.utils.CommandNodeWithPermission;
+import static io.github.cavenightingale.essentials.Essentials.LOGGER;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.reflect.TypeToken;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.tree.CommandNode;
 
-import static io.github.cavenightingale.essentials.Essentials.LOGGER;
+import io.github.cavenightingale.essentials.commands.EssPermCommand;
+import io.github.cavenightingale.essentials.commands.HomeCommand;
+import io.github.cavenightingale.essentials.commands.MiscCommand;
+import io.github.cavenightingale.essentials.commands.ServerEssentialsCommand;
+import io.github.cavenightingale.essentials.commands.TpaCommand;
+import io.github.cavenightingale.essentials.commands.WarpCommand;
+import io.github.cavenightingale.essentials.utils.CommandNodeWithPermission;
 
 public class EssentialsCommands {
 	public static void onCommandRegister(CommandDispatcher<ServerCommandSource> dispatcher, boolean b) {
@@ -39,7 +52,7 @@ public class EssentialsCommands {
 		}
 	}
 
-	public static void onServerStarted(MinecraftServer server) {
+	public static void loadPermission(MinecraftServer server) {
 		// does not apply this in onInitialize to ensure commands are fully registered
 		CommandNode<?> root = server.getCommandManager().getDispatcher().getRoot();
 		try (Reader reader = new BufferedReader(new FileReader("config/Essentials/permission.json", StandardCharsets.UTF_8))) {

@@ -1,19 +1,10 @@
 package io.github.cavenightingale.essentials.commands;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.LiteralMessage;
-import com.mojang.brigadier.Message;
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.Suggestion;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import io.github.cavenightingale.essentials.utils.Warps;
-import it.unimi.dsi.fastutil.floats.FloatFloatImmutablePair;
+import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
+import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+
+import java.util.concurrent.CompletableFuture;
+
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,14 +13,20 @@ import net.minecraft.text.MutableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.concurrent.CompletableFuture;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
-import static io.github.cavenightingale.essentials.utils.CommandPredicates.player;
-import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+import io.github.cavenightingale.essentials.utils.Warps;
+
+import it.unimi.dsi.fastutil.floats.FloatFloatImmutablePair;
 
 public class WarpCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(CommandManager.literal("warp").requires(player(0)).then(CommandManager.argument("name", StringArgumentType.string()).suggests(WarpCommand::suggestWarps).executes(ctx -> {
+		dispatcher.register(CommandManager.literal("warp").requires(opLevel(0)).then(CommandManager.argument("name", StringArgumentType.string()).suggests(WarpCommand::suggestWarps).executes(ctx -> {
 			Warps.Warp warp = Warps.warps.get(StringArgumentType.getString(ctx, "name"));
 			ServerPlayerEntity entity = ctx.getSource().getPlayer();
 			if(warp == null) {
@@ -40,9 +37,9 @@ public class WarpCommand {
 			}
 			return 1;
 		})));
-		dispatcher.register(CommandManager.literal("setwarp").requires(player(2)).then(CommandManager.argument("name", StringArgumentType.string()).executes(ctx -> setWarp(ctx, null))
+		dispatcher.register(CommandManager.literal("setwarp").requires(opLevel(2)).then(CommandManager.argument("name", StringArgumentType.string()).executes(ctx -> setWarp(ctx, null))
 				.then(CommandManager.argument("description", StringArgumentType.string()).executes(ctx -> setWarp(ctx, StringArgumentType.getString(ctx, "description"))))));
-		dispatcher.register(CommandManager.literal("delwarp").requires(player(2)).then(CommandManager.argument("name", StringArgumentType.string()).suggests(WarpCommand::suggestWarps).executes(ctx -> {
+		dispatcher.register(CommandManager.literal("delwarp").requires(opLevel(2)).then(CommandManager.argument("name", StringArgumentType.string()).suggests(WarpCommand::suggestWarps).executes(ctx -> {
 			Warps.Warp warp = Warps.warps.get(StringArgumentType.getString(ctx, "name"));
 			if(warp == null) {
 				ctx.getSource().sendError(formats.warpNotFound.format());

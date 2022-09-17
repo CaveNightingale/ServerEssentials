@@ -9,12 +9,12 @@ import io.github.cavenightingale.essentials.utils.Warps;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
-import static io.github.cavenightingale.essentials.utils.CommandPredicates.player;
+import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
 import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
 
 public class ServerEssentialsCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(CommandManager.literal("serveressentials").requires(player(4))
+		dispatcher.register(CommandManager.literal("serveressentials").requires(opLevel(4))
 				.then(CommandManager.literal("update").executes(ctx -> {
 					Updater.tryUpdateHome(ctx.getSource().getServer());
 					Updater.tryUpdateTranslation();

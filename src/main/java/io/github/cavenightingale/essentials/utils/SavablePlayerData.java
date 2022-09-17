@@ -1,14 +1,7 @@
 package io.github.cavenightingale.essentials.utils;
 
-import io.github.cavenightingale.essentials.Essentials;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
-
-import static io.github.cavenightingale.essentials.Essentials.LOGGER;
 
 public class SavablePlayerData {
 	public HashMap<String, Warps.Warp> homes = new HashMap<>();

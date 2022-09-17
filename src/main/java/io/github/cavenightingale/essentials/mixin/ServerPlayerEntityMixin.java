@@ -1,16 +1,15 @@
 package io.github.cavenightingale.essentials.mixin;
 
-import io.github.cavenightingale.essentials.commands.HomeCommand;
-import io.github.cavenightingale.essentials.utils.PlayerData;
-import io.github.cavenightingale.essentials.utils.Warps;
-import it.unimi.dsi.fastutil.floats.FloatFloatImmutablePair;
-import net.minecraft.server.network.ServerPlayerEntity;
+import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+import net.minecraft.server.network.ServerPlayerEntity;
+
+import io.github.cavenightingale.essentials.commands.HomeCommand;
 
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin {

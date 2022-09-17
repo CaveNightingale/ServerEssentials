@@ -1,16 +1,17 @@
 package io.github.cavenightingale.essentials.utils;
 
-import com.google.gson.*;
-import io.github.cavenightingale.essentials.Essentials;
+import java.lang.reflect.Type;
+
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-
-import static io.github.cavenightingale.essentials.Essentials.LOGGER;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 public class ServerTranslation {
 

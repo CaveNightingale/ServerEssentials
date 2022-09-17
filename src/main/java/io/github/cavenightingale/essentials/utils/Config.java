@@ -1,17 +1,24 @@
 package io.github.cavenightingale.essentials.utils;
 
-import com.google.gson.JsonParseException;
-import io.github.cavenightingale.essentials.Essentials;
+import static io.github.cavenightingale.essentials.Essentials.LOGGER;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Objects;
-import java.util.UUID;
 
-import static io.github.cavenightingale.essentials.Essentials.LOGGER;
+import com.google.gson.JsonParseException;
+
+import io.github.cavenightingale.essentials.Essentials;
 
 public class Config {
 	public static Config config = load(Config.class, "config");

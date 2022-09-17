@@ -1,20 +1,20 @@
 package io.github.cavenightingale.essentials.commands;
 
-import com.mojang.brigadier.CommandDispatcher;
+import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
+import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+
+import java.util.LinkedList;
+import java.util.UUID;
+
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 
-import java.util.LinkedList;
-import java.util.UUID;
-
-import static io.github.cavenightingale.essentials.utils.CommandPredicates.player;
-import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
+import com.mojang.brigadier.CommandDispatcher;
 
 public class TpaCommand {
 	record TpaRequest(UUID from, UUID to, long time, boolean reverse) {
@@ -55,19 +55,19 @@ public class TpaCommand {
 		}
 	}
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(CommandManager.literal("tpa").requires(player(0)).then(CommandManager.argument("target", EntityArgumentType.player()).executes(
+		dispatcher.register(CommandManager.literal("tpa").requires(opLevel(0)).then(CommandManager.argument("target", EntityArgumentType.player()).executes(
 				ctx -> requestTeleport(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "target"), false))));
-		dispatcher.register(CommandManager.literal("tpahere").requires(player(0)).then(CommandManager.argument("target", EntityArgumentType.player()).executes(
+		dispatcher.register(CommandManager.literal("tpahere").requires(opLevel(0)).then(CommandManager.argument("target", EntityArgumentType.player()).executes(
 				ctx -> requestTeleport(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "target"), true))));
-		dispatcher.register(CommandManager.literal("tpaccept").requires(player(0)).executes(ctx -> {
+		dispatcher.register(CommandManager.literal("tpaccept").requires(opLevel(0)).executes(ctx -> {
 			requests.stream().filter(s -> s.to.equals(ctx.getSource().getEntity().getUuid())).toList().forEach(req -> req.accept(ctx.getSource().getServer()));
 			return 0;
 		}));
-		dispatcher.register(CommandManager.literal("tpdeny").requires(player(0)).executes(ctx -> {
+		dispatcher.register(CommandManager.literal("tpdeny").requires(opLevel(0)).executes(ctx -> {
 			requests.stream().filter(s -> s.to.equals(ctx.getSource().getEntity().getUuid())).toList().forEach(req -> req.deny(ctx.getSource().getServer()));
 			return 0;
 		}));
-		dispatcher.register(CommandManager.literal("tpcancel").requires(player(0)).executes(ctx -> {
+		dispatcher.register(CommandManager.literal("tpcancel").requires(opLevel(0)).executes(ctx -> {
 			requests.stream().filter(s -> s.from.equals(ctx.getSource().getEntity().getUuid())).toList().forEach(req -> req.cancel(ctx.getSource().getServer()));
 			return 0;
 		}));

@@ -1,9 +1,9 @@
 package io.github.cavenightingale.essentials.utils;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import io.github.cavenightingale.essentials.Essentials;
-import it.unimi.dsi.fastutil.floats.FloatFloatImmutablePair;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Objects;
+
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -11,15 +11,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
-import static io.github.cavenightingale.essentials.Essentials.LOGGER;
+import it.unimi.dsi.fastutil.floats.FloatFloatImmutablePair;
 
 public class Warps extends HashMap<String, Warps.Warp> {
 	public record Warp(String name, Identifier world, Vec3d loc, FloatFloatImmutablePair angle, String description) {
