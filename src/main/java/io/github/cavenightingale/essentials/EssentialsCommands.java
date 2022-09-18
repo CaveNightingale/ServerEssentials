@@ -25,6 +25,7 @@ import com.mojang.brigadier.tree.CommandNode;
 
 import io.github.cavenightingale.essentials.commands.EssPermCommand;
 import io.github.cavenightingale.essentials.commands.HomeCommand;
+import io.github.cavenightingale.essentials.commands.ManCommand;
 import io.github.cavenightingale.essentials.commands.MiscCommand;
 import io.github.cavenightingale.essentials.commands.ServerEssentialsCommand;
 import io.github.cavenightingale.essentials.commands.TpaCommand;
@@ -39,6 +40,7 @@ public class EssentialsCommands {
 		MiscCommand.register(dispatcher);
 		EssPermCommand.register(dispatcher);
 		ServerEssentialsCommand.register(dispatcher);
+		ManCommand.register(dispatcher);
 		registerAliases(dispatcher,new String[][]{
 				{"tpask", "tpa"},
 				{"tpyes", "tpaccept"},
