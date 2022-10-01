@@ -28,8 +28,10 @@ public class Essentials implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		if(Config.config.gameLogEnabled)
+		if(Config.config.gameLogEnabled) {
 			GameEventLogger.init();
+			LOGGER.warn("*** Game Logging is still in early development ***");
+		}
 		CommandRegistrationCallback.EVENT.register(EssentialsCommands::onCommandRegister);
 		ServerLifecycleEvents.SERVER_STARTED.register(EssentialsCommands::loadPermission);
 		ServerTickEvents.END_SERVER_TICK.register(TpaCommand::tick);
