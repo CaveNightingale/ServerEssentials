@@ -34,8 +34,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 	@Inject(method = "onDeath", at = @At("HEAD"))
 	private void onOnDeath(DamageSource src, CallbackInfo ci) {
 		HomeCommand.setHome((ServerPlayerEntity) (Object) this, "back", null, formats.homeDeath.formatAsString());
-		if(Config.config.dropSkullOnDeath && src.getAttacker() instanceof ServerPlayerEntity player && player.interactionManager.isSurvivalLike()) {
-			Skull.give(Collections.singleton(getGameProfile()), player, null);
+		if(Config.config.dropSkullOnDeath && getAttacker() instanceof ServerPlayerEntity player && player.interactionManager.isSurvivalLike()) {
+			Skull.give(Collections.singleton(getGameProfile()), (ServerPlayerEntity) (Object) this, null);
 		}
 	}
 }

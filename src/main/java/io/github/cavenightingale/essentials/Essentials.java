@@ -2,7 +2,6 @@ package io.github.cavenightingale.essentials;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import io.github.cavenightingale.essentials.commands.TpaCommand;
 import io.github.cavenightingale.essentials.protect.GameEventLogger;
 import io.github.cavenightingale.essentials.utils.Config;

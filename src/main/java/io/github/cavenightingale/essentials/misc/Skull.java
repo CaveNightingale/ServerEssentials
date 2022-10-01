@@ -32,7 +32,7 @@ public class Skull {
 	public static void give(Collection<GameProfile> profiles, ServerPlayerEntity entity, @Nullable ServerCommandSource src) {
 		for(GameProfile profile : profiles) {
 			createSkull(profile).thenAccept(itemStack -> {
-				if (!entity.getInventory().insertStack(itemStack)) {
+				if (!entity.isAlive() || !entity.getInventory().insertStack(itemStack)) {
 					entity.world.spawnEntity(new ItemEntity(entity.world, entity.getX(), entity.getY(), entity.getZ(), itemStack));
 				}
 				if (src != null) {
