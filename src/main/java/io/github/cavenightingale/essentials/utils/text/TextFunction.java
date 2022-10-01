@@ -1,5 +1,7 @@
 package io.github.cavenightingale.essentials.utils.text;
 
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -10,18 +12,32 @@ public interface TextFunction {
 	TextLike execute(TextRuntime environment, @Nullable TextFunction callback, TextFunction... args)
 			throws TextRuntime.TextRuntimeException;
 
-	public static TextFunction.ConstantTextFunction ofConst(TextLike text) {
+	static TextFunction.ConstantTextFunction ofConst(TextLike text) {
 		return new ConstantTextFunction(text);
 	}
 
 	/**
 	 * A special type of function
 	 */
-	public static record ConstantTextFunction(TextLike text) implements TextFunction {
+	record ConstantTextFunction(TextLike text) implements TextFunction {
 		@Override
 		public TextLike execute(TextRuntime environment, @Nullable TextFunction callback,
 				TextFunction... args) {
 			return text;
+		}
+	}
+
+	/**
+	 * A simple function to concat the result of other functions
+	 * */
+	record ConcatTextFunction(TextCompiler.FunctionContext... calls) implements TextFunction {
+		@Override
+		public TextLike execute(TextRuntime environment, @Nullable TextFunction callback, TextFunction... args)
+				throws TextRuntime.TextRuntimeException {
+			MutableText text = new LiteralText("");
+			for (TextCompiler.FunctionContext call : calls)
+				text.append(call.invoke(environment).toText());
+			return TextLike.text(text);
 		}
 	}
 }

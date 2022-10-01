@@ -3,7 +3,7 @@ package io.github.cavenightingale.essentials.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.cavenightingale.essentials.sit.SeatEntity;
+import io.github.cavenightingale.essentials.misc.SeatEntity;
 import io.github.cavenightingale.essentials.utils.Config;
 import io.github.cavenightingale.essentials.utils.PlayerData;
 import net.minecraft.entity.player.PlayerAbilities;

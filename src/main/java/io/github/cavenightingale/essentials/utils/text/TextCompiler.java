@@ -2,21 +2,19 @@ package io.github.cavenightingale.essentials.utils.text;
 
 import java.util.ArrayList;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 
 import com.mojang.brigadier.StringReader;
 
 /**
  * This class is used to preprocess minecraft text
- * We wants to make configure easier
+ * We want to make configure easier
  * '\' marks as a beginning of the function name, '{' marks as a start of the
  * callback and '}' mark as an end of the callback
  * '(' marks the beginning of the argument list and ')' marks the end of the
  * argument list, the argument list is optional
- * Rerference to a function without calling it only allowed when it's used as an
+ * Reference to a function without calling it only allowed when it's used as an
  * argument
  * Use '#' as comment
  * To print '\' to minecraft you can use '\\', so as '\{', '\}', '\(', '\)',
@@ -47,30 +45,19 @@ public class TextCompiler {
 				throw new TextRuntime.TextRuntimeException("cannot find function " + name);
 		}
 
-		TextFunctionReference(String name) {
+		TextFunctionReference(@NotNull String name) {
 			this.name = name;
 		}
 
-		TextFunctionReference(TextFunction func) {
+		TextFunctionReference(@NotNull TextFunction func) {
 			this.function = func;
 		}
 	}
 
-	static record FunctionContext(TextFunctionReference func, @Nullable TextFunction callback,
+	record FunctionContext(TextFunctionReference func, @Nullable TextFunction callback,
 			TextFunction... args) {
 		TextLike invoke(TextRuntime env) throws TextRuntime.TextRuntimeException {
 			return func.get(env).execute(new TextRuntime(env), callback, args);
-		}
-	}
-
-	static record ConcatTextFunction(FunctionContext... calls) implements TextFunction {
-		@Override
-		public TextLike execute(TextRuntime environment, @Nullable TextFunction callback, TextFunction... args)
-				throws TextRuntime.TextRuntimeException {
-			MutableText text = new LiteralText("");
-			for (FunctionContext call : calls)
-				text.append(call.invoke(environment).toText());
-			return TextLike.text(text);
 		}
 	}
 
@@ -92,7 +79,7 @@ public class TextCompiler {
 			throw new TextSyntaxException("Early end of file");
 	}
 
-	private static FunctionContext parseContext(String funcname, StringReader reader) throws TextSyntaxException {
+	private static FunctionContext parseContext(String funcName, StringReader reader) throws TextSyntaxException {
 		if (reader.peek() == '(') {
 			ArrayList<TextFunction> innerFunction = new ArrayList<>();
 			do {
@@ -112,13 +99,13 @@ public class TextCompiler {
 				throw new TextSyntaxException("Expect {");
 			reader.skip();
 			TextFunction callback = parseBlock(reader, false);// it will be skipped later
-			return new FunctionContext(new TextFunctionReference(funcname), callback,
+			return new FunctionContext(new TextFunctionReference(funcName), callback,
 					innerFunction.toArray(new TextFunction[0]));
 		} else if (reader.peek() == '{') {
 			reader.skip();
 			TextFunction callback = parseBlock(reader, false);
 			check(reader);
-			return new FunctionContext(new TextFunctionReference(funcname), callback);
+			return new FunctionContext(new TextFunctionReference(funcName), callback);
 		} else {
 			throw new TextSyntaxException("Unexpected character " + reader.peek());
 		}
@@ -136,11 +123,11 @@ public class TextCompiler {
 				switch (reader.peek()) {
 					case '\\', '{', '}', '(', ')', ',' -> sb.append(reader.peek());
 					default -> {
-						String funcname = readFunctionName(reader);
+						String funcName = readFunctionName(reader);
 						reader.skipWhitespace();
 						if (reader.peek() == ',' || reader.peek() == ')') {
 							if (sb.toString().isBlank()) {
-								TextFunctionReference ref = new TextFunctionReference(funcname);
+								TextFunctionReference ref = new TextFunctionReference(funcName);
 								reader.skip();
 								return (env, cb, args) -> ref.get(env).execute(env, cb, args);
 							} else {
@@ -153,7 +140,7 @@ public class TextCompiler {
 										null));
 								sb = new StringBuilder();
 							}
-							contexts.add(parseContext(funcname, reader));
+							contexts.add(parseContext(funcName, reader));
 						}
 					}
 				}
@@ -166,7 +153,7 @@ public class TextCompiler {
 		if (!sb.isEmpty())
 			contexts.add(new FunctionContext(
 					new TextFunctionReference(TextFunction.ofConst(TextLike.string(sb.toString()))), null));
-		return new TextCompiler.ConcatTextFunction(contexts.toArray(new FunctionContext[0]));
+		return new TextFunction.ConcatTextFunction(contexts.toArray(new FunctionContext[0]));
 	}
 
 	private static TextFunction parseBlock(StringReader reader, boolean isFile) throws TextSyntaxException {
@@ -180,7 +167,7 @@ public class TextCompiler {
 				switch (reader.peek()) {
 					case '\\', '{', '}', '(', ')', ',' -> sb.append(reader.peek());
 					default -> {
-						String funcname = readFunctionName(reader);
+						String funcName = readFunctionName(reader);
 						reader.skipWhitespace();
 						if (!sb.isEmpty()) {
 							contexts.add(new FunctionContext(
@@ -188,7 +175,7 @@ public class TextCompiler {
 									null));
 							sb = new StringBuilder();
 						}
-						contexts.add(parseContext(funcname, reader));
+						contexts.add(parseContext(funcName, reader));
 					}
 				}
 			} else {
@@ -199,7 +186,7 @@ public class TextCompiler {
 		if (!sb.isEmpty())
 			contexts.add(new FunctionContext(
 					new TextFunctionReference(TextFunction.ofConst(TextLike.string(sb.toString()))), null));
-		return new TextCompiler.ConcatTextFunction(contexts.toArray(new FunctionContext[0]));
+		return new TextFunction.ConcatTextFunction(contexts.toArray(new FunctionContext[0]));
 	}
 
 	public static TextFunction compile(String text) throws TextSyntaxException {

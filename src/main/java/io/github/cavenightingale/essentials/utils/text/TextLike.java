@@ -11,11 +11,7 @@ import net.minecraft.nbt.visitor.NbtTextFormatter;
 import net.minecraft.nbt.visitor.StringNbtWriter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.*;
 import net.minecraft.text.HoverEvent.EntityContent;
 import net.minecraft.text.HoverEvent.ItemStackContent;
 
@@ -34,8 +30,8 @@ public interface TextLike {
 	 */
 	default List<Text> toLines() {
 		List<Text> flatten = new ArrayList<>();
-		flat(flatten, toText());
-		List<List<Text>> lines = split(flatten, "\n");
+		flat(flatten, toText(), Style.EMPTY);
+		List<List<Text>> lines = split(flatten, "[\n|\f]");
 		List<Text> result = new ArrayList<>();
 		for (List<Text> line : lines) {
 			LiteralText root = new LiteralText("");
@@ -53,7 +49,7 @@ public interface TextLike {
 	 */
 	default List<List<Text>> toPages() {
 		List<Text> flatten = new ArrayList<>();
-		flat(flatten, toText());
+		flat(flatten, toText(), Style.EMPTY);
 		List<List<Text>> result = new ArrayList<>();
 		for (List<Text> page : split(flatten, "\f")) {
 			List<Text> roots = new ArrayList<>();
@@ -70,9 +66,9 @@ public interface TextLike {
 	}
 
 	/**
-	 * This class repesent a raw string
+	 * This class represent a raw string
 	 */
-	public static record StringText(String string) implements TextLike {
+	record StringTextLike(String string) implements TextLike {
 		@Override
 		public MutableText toText() {
 			return new LiteralText(string);
@@ -85,17 +81,17 @@ public interface TextLike {
 	}
 
 	/**
-	 * This class represent entity information that can be used inhover event 
+	 * This class represent entity information that can be used in hover event
 	 */
-	public static record EntityTextLike(EntityContent content) implements TextLike {
+	record EntityTextLike(EntityContent content) implements TextLike {
 		@Override
 		public MutableText toText() {
-			return content.name.shallowCopy();
+			return content.name != null ? content.name.shallowCopy() : content.entityType.getName().shallowCopy();
 		}
 
 		@Override
 		public String toString() {
-			return content.name.getString();
+			return content.name != null ? content.name.getString() : content.entityType.getName().getString();
 		}
 
 		@Nullable
@@ -114,9 +110,9 @@ public interface TextLike {
 		}
 	}
 	/**
-	 * This class represent itemstack information that can be used inhover event 
+	 * This class represent itemstack information that can be used in hover event
 	 */
-	public static record ItemStackTextLike(ItemStackContent content) implements TextLike {
+	record ItemStackTextLike(ItemStackContent content) implements TextLike {
 		public ItemStackTextLike(ItemStack stack) {
 			this(new ItemStackContent(stack));
 		}
@@ -140,9 +136,9 @@ public interface TextLike {
 	}
 
 	/**
-	 * This class represent an alreadg-generated Text
+	 * This class represent an already-generated Text
 	 */
-	public static record MinecraftTextLike(Text text) implements TextLike {
+	record TextTextLike(Text text) implements TextLike {
 		@Override
 		public MutableText toText() {
 			return text.shallowCopy();
@@ -157,7 +153,7 @@ public interface TextLike {
 	/**
 	 * Used to hold nbt
 	 */
-	public static record NbtTextLike(NbtElement nbt) implements TextLike {
+	record NbtTextLike(NbtElement nbt) implements TextLike {
 		@Override
 		public MutableText toText() {
 			return new NbtTextFormatter("", 0).apply(nbt).shallowCopy();
@@ -175,8 +171,8 @@ public interface TextLike {
 	 * @param text the text
 	 * @return a view of the text
 	 */
-	static StringText string(String text) {
-		return new StringText(text);
+	static StringTextLike string(String text) {
+		return new StringTextLike(text);
 	}
 
 	static EntityTextLike entity(EntityContent content) {
@@ -187,22 +183,23 @@ public interface TextLike {
 		return entity(new EntityContent(entity.getType(), entity.getUuid(), entity.getDisplayName()));
 	}
 
-	static MinecraftTextLike text(Text text) {
-		return new MinecraftTextLike(text);
+	static TextTextLike text(Text text) {
+		return new TextTextLike(text);
 	}
 
 	static NbtTextLike nbt(NbtElement element) {
 		return new NbtTextLike(element);
 	}
 
-	private static void flat(List<Text> list, Text text) {
+	private static void flat(List<Text> list, Text text, Style parent) {
 		MutableText self = text.copy();
+		Style thisStyle = text.getStyle().withParent(parent);
 		if (!(self instanceof LiteralText literal && literal.getRawString().isEmpty())) {
-			self.setStyle(text.getStyle());
+			self.setStyle(thisStyle);
 			list.add(self);
 		}
 		for (Text sibling : text.getSiblings()) {
-			flat(list, sibling);
+			flat(list, sibling, thisStyle);
 		}
 	}
 
@@ -210,7 +207,7 @@ public interface TextLike {
 		ArrayList<List<Text>> result = new ArrayList<>();
 		ArrayList<Text> buffer = new ArrayList<>();
 		for (Text text : texts) {
-			if (text instanceof LiteralText literal && literal.getRawString().contains(seq)) {
+			if (text instanceof LiteralText literal && literal.getRawString().matches(seq)) {
 				String[] lines = literal.getRawString().split(seq, Integer.MAX_VALUE);
 				buffer.add(new LiteralText(lines[0]).setStyle(literal.getStyle()));
 				for (int i = 1; i < lines.length; i++) {
@@ -218,6 +215,8 @@ public interface TextLike {
 					buffer = new ArrayList<>();
 					buffer.add(new LiteralText(lines[i]).setStyle(literal.getStyle()));
 				}
+			} else {
+				buffer.add(text);
 			}
 		}
 		if (!buffer.isEmpty()) {

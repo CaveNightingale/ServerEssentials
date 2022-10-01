@@ -55,6 +55,7 @@ public class ServerTranslation {
 			esspermCommandNotFoundToGet = new Node("找不到命令，无法列举权限"),
 			esspermCommandPermissionSetted = new Node("已设置命令{}的权限为{}"),
 			esspermCommandPermissionSettedRecursion = new Node("已递归设置命令{}的权限为{}"),
+			esspermCommandOperatorList = new Node("服务器管理员列表：{}"),
 			esspermCommandPermissionUseVanilla = new Node("命令{}使用原版权限系统"),
 			esspermCommandPermissionUseModded = new Node("命令{}需要权限{}"),
 			esspermUsermodOpChanged = new Node("已更改{}的管理员信息"),
@@ -80,6 +81,12 @@ public class ServerTranslation {
 			homeDeath = new Node("上次死亡位置"),
 			homeSpawn = new Node("上次设置重生点位置"),
 			sessUpdated = new Node("已尝试更新配置文件"),
-			sessReloaded = new Node("已尝试重新载入配置文件");
+			sessReloaded = new Node("已尝试重新载入配置文件"),
+			sessViewDistance = new Node("目前服务器视距为{}"),
+			sessViewDistanceUpdated = new Node("服务器视距已调整为{}"),
+			skullGiven = new Node("已给予{}一个{}的头颅"),
+			manIllegalPath = new Node("所要查看的帮助页面路径无效"),
+			manFailed = new Node("无法展示页面，请联系管理员"),
+			manNotFound = new Node("找不到页面");
 
 }

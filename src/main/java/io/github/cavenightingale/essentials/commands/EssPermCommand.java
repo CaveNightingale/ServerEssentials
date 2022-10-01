@@ -1,17 +1,5 @@
 package io.github.cavenightingale.essentials.commands;
 
-import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
-import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
-
-import java.util.Collection;
-
-import net.minecraft.command.argument.GameProfileArgumentType;
-import net.minecraft.server.OperatorEntry;
-import net.minecraft.server.OperatorList;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -20,9 +8,19 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.CommandNode;
-
 import io.github.cavenightingale.essentials.EssentialsCommands;
 import io.github.cavenightingale.essentials.utils.CommandNodeWithPermission;
+import net.minecraft.command.argument.GameProfileArgumentType;
+import net.minecraft.server.OperatorEntry;
+import net.minecraft.server.OperatorList;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+
+import java.util.Collection;
+
+import static io.github.cavenightingale.essentials.utils.CommandPredicates.opLevel;
+import static io.github.cavenightingale.essentials.utils.ServerTranslation.formats;
 
 public class EssPermCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -36,7 +34,7 @@ public class EssPermCommand {
 								.then(CommandManager.argument("commandNode", StringArgumentType.string()).executes(ctx -> getCommandPermission(ctx, false))
 										.then(CommandManager.literal("recursion").executes(ctx -> getCommandPermission(ctx, true))))))
 				.then(CommandManager.literal("usermod")
-						.then(CommandManager.literal("operator")
+						.then(CommandManager.literal("operator").executes(EssPermCommand::listOperators)
 								.then(CommandManager.argument("player", GameProfileArgumentType.gameProfile())
 										.then(CommandManager.argument("level", IntegerArgumentType.integer(0, 4))
 												.then(CommandManager.argument("byPassPlayerLimit", BoolArgumentType.bool()).executes(EssPermCommand::usermodOperator)))))));
@@ -67,6 +65,12 @@ public class EssPermCommand {
 				updatePermission(child, perm, true);
 			}
 		}
+	}
+
+	private static int listOperators(CommandContext<ServerCommandSource> ctx) {
+		String[] names = ctx.getSource().getServer().getPlayerManager().getOpList().getNames();
+		ctx.getSource().sendFeedback(formats.esspermCommandOperatorList.format(String.join(",", names)), false);
+		return names.length;
 	}
 
 	private static int getCommandPermission(CommandContext<ServerCommandSource> ctx, boolean recursion) {

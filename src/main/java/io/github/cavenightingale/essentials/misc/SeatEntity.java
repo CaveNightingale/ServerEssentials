@@ -1,4 +1,4 @@
-package io.github.cavenightingale.essentials.sit;
+package io.github.cavenightingale.essentials.misc;
 
 import java.util.HashMap;
 import java.util.UUID;

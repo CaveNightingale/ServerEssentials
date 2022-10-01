@@ -74,4 +74,6 @@ public class Config {
 	public boolean sitEnabled = true;
 
 	public boolean gameLogEnabled = false;
+
+	public boolean dropSkullOnDeath = true;
 }

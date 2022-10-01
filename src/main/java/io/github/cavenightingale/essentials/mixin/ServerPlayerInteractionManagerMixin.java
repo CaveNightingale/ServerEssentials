@@ -1,6 +1,6 @@
 package io.github.cavenightingale.essentials.mixin;
 
-import io.github.cavenightingale.essentials.sit.SeatEntity;
+import io.github.cavenightingale.essentials.misc.SeatEntity;
 import io.github.cavenightingale.essentials.utils.Config;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

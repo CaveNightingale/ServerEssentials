@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Objects;
 
+import net.minecraft.network.packet.s2c.play.ExperienceBarUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -26,9 +27,12 @@ import it.unimi.dsi.fastutil.floats.FloatFloatImmutablePair;
 public class Warps extends HashMap<String, Warps.Warp> {
 	public record Warp(String name, Identifier world, Vec3d loc, FloatFloatImmutablePair angle, String description) {
 		public void teleport(ServerPlayerEntity player) {
+			assert player.getServer() != null;
 			ServerWorld world1 = player.getServer().getWorld(RegistryKey.of(Registry.WORLD_KEY, world));
-			if(world1 != null)
+			if(world1 != null) {
 				player.teleport(world1, loc.x, loc.y, loc.z, angle.firstFloat(), angle.secondFloat());
+				player.networkHandler.connection.send(new ExperienceBarUpdateS2CPacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
+			}
 		}
 	}
 

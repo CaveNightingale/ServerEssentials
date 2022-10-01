@@ -33,9 +33,7 @@ public class TextLibrary {
 		});
 		// put all the formatting characters
 		for (Formatting formatting : Formatting.values()) {
-			runtime.put(String.valueOf(formatting.getCode()), (env, cb, args) -> {
-				return env.invoke(cb).apply(t -> t.formatted(formatting));
-			});
+			runtime.put(String.valueOf(formatting.getCode()), (env, cb, args) -> env.invoke(cb).apply(t -> t.formatted(formatting)));
 		}
 		// click events
 		for (ClickEvent.Action clickAction : ClickEvent.Action.values()) {
@@ -85,5 +83,7 @@ public class TextLibrary {
 	public static void openPages(TextRuntime runtime) {
 		runtime.putVar("line", TextLike.string("\n"));
 		runtime.putVar("page", TextLike.string("\f"));
+		runtime.putVar("i", TextLike.string("\n"));
+		runtime.putVar("p", TextLike.string("\f"));
 	}
 }
