@@ -10,6 +10,7 @@
     "EndermanEntityMixin",
     "FabricRegistrySyncManagerMixin",
     "FireballMixin",
+    "ServerCommandSourceMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",
     "ServerPlayerNetworkHandlerMixin",

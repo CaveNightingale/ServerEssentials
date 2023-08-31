@@ -1,8 +1,10 @@
 package io.github.cavenightingale.essentials.mixin;
 
 import com.mojang.brigadier.tree.CommandNode;
+import io.github.cavenightingale.essentials.misc.CommandSourceWithOutput;
 import io.github.cavenightingale.essentials.utils.CommandNodeWithPermission;
 import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,7 +32,7 @@ public class CommandNodeMixin implements CommandNodeWithPermission {
 
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	public void canUse(Object source, CallbackInfoReturnable<Boolean> cir) {
-		if(source instanceof ServerCommandSource src && permissionNode != null) {
+		if(source instanceof ServerCommandSource src && permissionNode != null && ((CommandSourceWithOutput) src).serveressentials_getOutput() instanceof PlayerEntity) {
 			cir.setReturnValue(Permissions.check(src, permissionNode) && requirement.test(src.withLevel(5)));
 		}
 	}

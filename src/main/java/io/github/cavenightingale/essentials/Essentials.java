@@ -36,7 +36,7 @@ public class Essentials implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(EssentialsCommands::loadPermission);
 		ServerTickEvents.END_SERVER_TICK.register(TpaCommand::tick);
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, _ignored0, _ignored1) -> EssentialsCommands.loadPermission(server));
-
+		
 		gameruleCreeperGriefing = GameRuleRegistry.register("creeperGriefing", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));
 		gameruleEndermanGriefing = GameRuleRegistry.register("endermanGriefing", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));
 		gameruleGhastGriefing = GameRuleRegistry.register("ghastGriefing", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));
